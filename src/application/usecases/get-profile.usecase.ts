@@ -3,6 +3,7 @@ import { PostService } from "@/domain/post/post.service.js";
 import { ScheduleService } from "@/domain/schedule/schedule.service.js";
 import UploadsService from "@/domain/uploads/upload.service.js";
 import { UsersService } from "@/domain/users/users.service.js";
+import { NotFoundError } from "@/infrastructure/types/appError.js";
 import UseCase from "@/infrastructure/types/UseCase.js";
 
 // TODO : 유저 차단되었는지 확인하는 칼럼
@@ -41,6 +42,10 @@ export default class GetProfileUserCase
     ]);
 
     // TODO :userSer > 차단 확인
+
+    if (!user) {
+      throw new NotFoundError("사용자 찾을 수 없습니다.")
+    }
 
     return {
       profile: {

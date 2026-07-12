@@ -11,6 +11,7 @@ import { startNewsCron } from "./domain/news/news.cron.js";
 import { RegisterRoutes } from "./tsoa/routes.js";
 import cors from "cors";
 import { ValidateError } from "@tsoa/runtime";
+import { errorHandler } from './infrastructure/middleware/errorHandler.js';
 
 // 1. 데이터베이스 연결
 sequelize
@@ -42,6 +43,7 @@ app.use(rateLimiter);
 
 RegisterRoutes(app);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(errorHandler);
 
 // if (isNewsSyncEnabled) {
 //   startNewsCron();

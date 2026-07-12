@@ -41,3 +41,13 @@ export class NotFoundError extends AppError {
     super(message, 404, code);
   }
 }
+
+export class UnauthorizedError extends AppError {
+  constructor(message?: string) {
+    super(
+      message ?? "인증이 필요합니다.",
+      401,
+      ErrorCode.UNAUTHORIZED
+    );
+  }
+}
