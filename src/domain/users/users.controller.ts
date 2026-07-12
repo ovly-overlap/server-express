@@ -11,6 +11,7 @@ import {
   SuccessResponse,
   Path,
   Query,
+  Security,
 } from "@tsoa/runtime";
 import {
   UpdateIntroReq,
@@ -35,6 +36,7 @@ export class UsersController extends Controller {
     new UploadsService()
   );
 
+  @Security("jwt")
   @Get("{viewerId}")
   public async getUserById(
     @Request() req: ExpressRequest,
@@ -62,6 +64,7 @@ export class UsersController extends Controller {
     return result;
   }
 
+  @Security("jwt")
   @Patch("me/image") // TODO : ;profile image update 문
   public async updateProfileImage(
     // Presign
@@ -74,6 +77,7 @@ export class UsersController extends Controller {
     return { success: true, message: "프로필 변경 완료" };
   }
 
+  @Security("jwt")
   @Patch("me/intro")
   public async updateProfileIntro(
     @Request() req: ExpressRequest,
@@ -87,6 +91,7 @@ export class UsersController extends Controller {
     );
   }
 
+  @Security("jwt")
   @Post("me/fandom")
   @SuccessResponse(201, "Create")
   public async updateFandom(

@@ -27,10 +27,9 @@ const newsSyncJob = new NewsSyncJob();
 const isNewsSyncEnabled = process.env.NEWS_SYNC_ENABLED !== "false";
 const shouldRunNewsSyncOnStart = process.env.NEWS_SYNC_ON_START !== "false";
 
-// 2. 글로벌 미들웨어 설정 (🚨 순서 극도로 중요!)
 app.use(
   cors({
-    origin: true,
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -41,14 +40,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(rateLimiter);
 
-// 3. TSOA 라우터 및 Swagger 등록
 RegisterRoutes(app);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// 4. 크론탭 시작
-if (isNewsSyncEnabled) {
-  startNewsCron();
-}
+// if (isNewsSyncEnabled) {
+//   startNewsCron();
+// }
 
 // 5. 에러 핸들링 미들웨어 (맨 아래 유지)
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

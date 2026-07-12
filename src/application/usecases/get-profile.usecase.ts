@@ -3,20 +3,18 @@ import { PostService } from "@/domain/post/post.service.js";
 import { ScheduleService } from "@/domain/schedule/schedule.service.js";
 import UploadsService from "@/domain/uploads/upload.service.js";
 import { UsersService } from "@/domain/users/users.service.js";
-import { UserProfileMapper } from "@/infrastructure/mapper.js";
 import UseCase from "@/infrastructure/types/UseCase.js";
 
 // TODO : 유저 차단되었는지 확인하는 칼럼
 export default class GetProfileUserCase
-  implements UseCase<GetProfileRequest, UserProfilePreviewResponse>
-{
+  implements UseCase<GetProfileRequest, UserProfilePreviewResponse> {
   constructor(
     private readonly userService: UsersService,
     private readonly postService: PostService,
     private readonly scheduleService: ScheduleService,
     private readonly followsService: FollowsService,
     private readonly uploadService: UploadsService
-  ) {}
+  ) { }
   async execute(req: GetProfileRequest): Promise<UserProfilePreviewResponse> {
     const [
       user,
@@ -59,10 +57,10 @@ export default class GetProfileUserCase
 
       recentPost: recentPost
         ? {
-            images: recentPost.images.map((image) => image.url),
-            content: recentPost.content,
-            date: recentPost.createdAt,
-          }
+          images: recentPost.images.map((image) => image.url),
+          content: recentPost.content,
+          date: recentPost.createdAt,
+        }
         : null,
 
       schedules: schedules.map((schedule) => ({

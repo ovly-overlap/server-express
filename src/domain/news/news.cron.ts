@@ -5,7 +5,7 @@ const newsSyncJob = new NewsSyncJob();
 const isVerboseNewsLog = process.env.NEWS_SYNC_VERBOSE === "true";
 
 export function startNewsCron() {
-  cron.schedule("0 */30 * * * *", async () => {
+  cron.schedule("1 */30 * * * *", async () => {
     if (isVerboseNewsLog) {
       console.log("News sync started");
     }

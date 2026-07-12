@@ -20,10 +20,8 @@ import { CommentController } from './../domain/comment/comment.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../domain/auth/auth.controller.js';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
+import { expressAuthentication } from "../infrastructure/middleware/authentication.js";
 
-
-
-import { expressAuthentication } from "@/infrastructure/middleware/authentication.js";
 
 const expressAuthenticationRecasted = expressAuthentication as (
     request: ExRequest,
@@ -243,6 +241,7 @@ export function RegisterRoutes(app: Router) {
         viewerId: { "in": "path", "name": "viewerId", "required": true, "dataType": "double" },
     };
     app.get('/users/:viewerId',
+        authenticateMiddleware([{ "jwt": [] }]),
         ...(fetchMiddlewares<RequestHandler>(UsersController)),
         ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUserById)),
 
@@ -306,6 +305,7 @@ export function RegisterRoutes(app: Router) {
         requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "UpdateImageReq" },
     };
     app.patch('/users/me/image',
+        authenticateMiddleware([{ "jwt": [] }]),
         ...(fetchMiddlewares<RequestHandler>(UsersController)),
         ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.updateProfileImage)),
 
@@ -337,6 +337,7 @@ export function RegisterRoutes(app: Router) {
         requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "UpdateIntroReq" },
     };
     app.patch('/users/me/intro',
+        authenticateMiddleware([{ "jwt": [] }]),
         ...(fetchMiddlewares<RequestHandler>(UsersController)),
         ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.updateProfileIntro)),
 
@@ -368,6 +369,7 @@ export function RegisterRoutes(app: Router) {
         requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "UpdateOrCreateFandomReq" },
     };
     app.post('/users/me/fandom',
+        authenticateMiddleware([{ "jwt": [] }]),
         ...(fetchMiddlewares<RequestHandler>(UsersController)),
         ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.updateFandom)),
 
@@ -1086,6 +1088,38 @@ export function RegisterRoutes(app: Router) {
 
                 await templateService.apiHandler({
                     methodName: 'createComment',
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsCommentController_deleteComment: Record<string, TsoaRoute.ParameterSchema> = {
+        req: { "in": "request", "name": "req", "required": true, "dataType": "object" },
+        commentId: { "in": "path", "name": "commentId", "required": true, "dataType": "double" },
+    };
+    app.delete('/comment/:commentId',
+        authenticateMiddleware([{ "jwt": [] }]),
+        ...(fetchMiddlewares<RequestHandler>(CommentController)),
+        ...(fetchMiddlewares<RequestHandler>(CommentController.prototype.deleteComment)),
+
+        async function CommentController_deleteComment(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsCommentController_deleteComment, request, response });
+
+                const controller = new CommentController();
+
+                await templateService.apiHandler({
+                    methodName: 'deleteComment',
                     controller,
                     response,
                     next,
